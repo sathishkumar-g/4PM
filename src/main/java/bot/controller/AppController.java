@@ -55,6 +55,9 @@ public class AppController {
 	public ResponseEntity<Object> get() {	
 		System.out.println("Inside get method ");
 		List<LuckyNumber> lNumberList = (List<LuckyNumber>) luckyNumberRepository.findAll();
-		return new ResponseEntity<>(lNumberList.get(0), HttpStatus.OK);
+		if(null!=lNumberList.get(0))
+			return new ResponseEntity<>(lNumberList.get(0), HttpStatus.OK);
+		else
+			return new ResponseEntity<>(new LuckyNumber("",""), HttpStatus.OK);
 	}
 }
