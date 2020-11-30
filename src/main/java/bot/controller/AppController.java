@@ -1,5 +1,7 @@
 package bot.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,8 +54,7 @@ public class AppController {
 	@GetMapping(path = "/get", produces = "application/json")
 	public ResponseEntity<Object> get(@RequestParam(value = "date") String date) {
 		System.out.println("Inside get method " + date);
-		LuckyNumber luckyNumber = (LuckyNumber) luckyNumberRepository.findById(date).orElse(null);
-		System.out.println(luckyNumber.getDate() + " " + luckyNumber.getNumber());
-		return new ResponseEntity<>(luckyNumber, HttpStatus.OK);
+		List<LuckyNumber> lNumberList = (List<LuckyNumber>) luckyNumberRepository.findAll();
+		return new ResponseEntity<>(lNumberList.get(0), HttpStatus.OK);
 	}
 }

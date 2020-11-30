@@ -11,4 +11,6 @@ import bot.model.LuckyNumber;
 public interface LuckyNumberRepository extends CrudRepository<LuckyNumber, String>{
 	LuckyNumber save(LuckyNumber lNumber);
 	Optional<LuckyNumber> findById(String date);
+	void deleteAll();
+	Iterable<LuckyNumber> findAll();
 }
