@@ -44,6 +44,7 @@ public class AppController {
 	@PostMapping(path = "/save", consumes = "application/json")
 	public ResponseEntity<Object> save(@RequestBody LuckyNumber lNumber) {
 		System.out.println("Inside Save Method " + lNumber.getNumber() + " " + lNumber.getDate());
+		luckyNumberRepository.deleteAll();
 		LuckyNumber luckyNumber = luckyNumberRepository.save(lNumber);
 		return new ResponseEntity<>(luckyNumber, HttpStatus.OK);
 	}
