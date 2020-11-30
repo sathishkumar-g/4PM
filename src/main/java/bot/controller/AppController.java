@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import bot.model.LuckyNumber;
@@ -52,8 +51,9 @@ public class AppController {
 	}
 
 	@GetMapping(path = "/get", produces = "application/json")
-	public ResponseEntity<Object> get(@RequestParam(value = "date") String date) {
-		System.out.println("Inside get method " + date);
+	//public ResponseEntity<Object> get(@RequestParam(value = "date") String date) {
+	public ResponseEntity<Object> get() {	
+		System.out.println("Inside get method ");
 		List<LuckyNumber> lNumberList = (List<LuckyNumber>) luckyNumberRepository.findAll();
 		return new ResponseEntity<>(lNumberList.get(0), HttpStatus.OK);
 	}
