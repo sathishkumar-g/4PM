@@ -1,5 +1,8 @@
 package bot.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +49,7 @@ public class AppController {
 	@PostMapping(path = "/save", consumes = "application/json")
 	public ResponseEntity<Object> save(@RequestBody LuckyNumber lNumber) {
 		System.out.println("Inside Save Method " + lNumber.getNumber() + " " + lNumber.getDate());
-		//luckyNumberRepository.deleteAll();
+		// luckyNumberRepository.deleteAll();
 		LuckyNumber luckyNumber = luckyNumberRepository.save(lNumber);
 		return new ResponseEntity<>(luckyNumber, HttpStatus.OK);
 	}
@@ -55,19 +58,25 @@ public class AppController {
 	public ResponseEntity<Object> fetch(@RequestParam(value = "date") String date) {
 		System.out.println("Inside get method ");
 		List<LuckyNumber> lNumberList = (List<LuckyNumber>) luckyNumberRepository.findAll();
-		if(!lNumberList.isEmpty())
+		if (!lNumberList.isEmpty())
 			return new ResponseEntity<>(lNumberList.get(0), HttpStatus.OK);
 		else
-			return new ResponseEntity<>(new LuckyNumber("",""), HttpStatus.OK);
+			return new ResponseEntity<>(new LuckyNumber("", ""), HttpStatus.OK);
 	}
-	
+
 	@GetMapping(path = "/findAll", produces = "application/json")
-	public ResponseEntity<Object> fetchAll() {	
+	public ResponseEntity<Object> fetchAll() {
 		System.out.println("Inside get method ");
 		List<LuckyNumber> lNumberList = (List<LuckyNumber>) luckyNumberRepository.findAll();
-		if(!lNumberList.isEmpty())
+		if (!lNumberList.isEmpty()) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			Collections.sort(lNumberList, (s1, s2) -> LocalDate.parse(s2.getDate(), formatter)
+					.compareTo(LocalDate.parse(s1.getDate(), formatter)));
+			for(LuckyNumber lno:lNumberList) {
+				System.out.println(lno.getDate());
+			}
 			return new ResponseEntity<>(lNumberList, HttpStatus.OK);
-		else
-			return new ResponseEntity<>(new LuckyNumber("",""), HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(new LuckyNumber("", ""), HttpStatus.OK);
 	}
 }
