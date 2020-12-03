@@ -45,18 +45,27 @@ public class AppController {
 	@PostMapping(path = "/save", consumes = "application/json")
 	public ResponseEntity<Object> save(@RequestBody LuckyNumber lNumber) {
 		System.out.println("Inside Save Method " + lNumber.getNumber() + " " + lNumber.getDate());
-		luckyNumberRepository.deleteAll();
+		//luckyNumberRepository.deleteAll();
 		LuckyNumber luckyNumber = luckyNumberRepository.save(lNumber);
 		return new ResponseEntity<>(luckyNumber, HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/get", produces = "application/json")
-	//public ResponseEntity<Object> get(@RequestParam(value = "date") String date) {
-	public ResponseEntity<Object> get() {	
+	@GetMapping(path = "/find", produces = "application/json")
+	public ResponseEntity<Object> fetch(@RequestParam(value = "date") String date) {
 		System.out.println("Inside get method ");
 		List<LuckyNumber> lNumberList = (List<LuckyNumber>) luckyNumberRepository.findAll();
 		if(!lNumberList.isEmpty())
 			return new ResponseEntity<>(lNumberList.get(0), HttpStatus.OK);
+		else
+			return new ResponseEntity<>(new LuckyNumber("",""), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/findAll", produces = "application/json")
+	public ResponseEntity<Object> fetchAll() {	
+		System.out.println("Inside get method ");
+		List<LuckyNumber> lNumberList = (List<LuckyNumber>) luckyNumberRepository.findAll();
+		if(!lNumberList.isEmpty())
+			return new ResponseEntity<>(lNumberList, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(new LuckyNumber("",""), HttpStatus.OK);
 	}
